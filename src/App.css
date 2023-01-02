@@ -1,0 +1,17 @@
+body {
+  background-color: #32373a;
+  color: bisque;
+}
+
+.delete-button {
+  margin-left: 6px;
+  border-radius: 6px;
+  padding: 12px 11px 10px 12px;
+}
+
+.edit-button {
+  margin-left: 8px;
+  border-radius: 6px;
+  padding-top: 6px;
+  padding: 12px 11px 10px 12px;
+}

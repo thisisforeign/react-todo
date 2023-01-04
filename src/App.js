@@ -3,10 +3,12 @@ import "./App.css";
 import TodoList from "./components/TodoList";
 import { VscTrash } from "react-icons/vsc";
 import { FiEdit2 } from "react-icons/fi";
+import { HiSearch } from "react-icons/hi";
 
 function App() {
   const [newTodo, setTodo] = useState("");
   const [items, setItems] = useState([]);
+  const [toggle, setToggle] = useState(false);
 
   function addTodo(e) {
     e.preventDefault(); //prevents page from refreshing
@@ -27,10 +29,26 @@ function App() {
     setItems(newArray);
   }
 
+  function editTodo(id) {
+    console.log(items);
+  }
+
+  function toggled() {
+    if (toggle === false) {
+      setToggle(true);
+    } else setToggle(false);
+  }
+
+  function searchTodo() {}
+
   return (
     <div className="todo-app">
       <h1>Todo app</h1>
-      <form className="todo-form" onSubmit={addTodo}>
+      <form
+        className="todo-form"
+        onSubmit={addTodo}
+        autoComplete={toggle === false ? "off" : "on"}
+      >
         <input
           autoFocus
           type="text"
@@ -42,13 +60,22 @@ function App() {
         <button className="todo-button" type="submit">
           Add
         </button>
+        <button className="toggle-button" onClick={toggled}>
+          History
+        </button>
+        <button className="search-button" onClick={searchTodo}>
+          <HiSearch />
+        </button>
 
         <ul>
           {items.map((item) => {
             return (
               <li key={item.id}>
-                {item.value}{" "}
-                <button className="edit-button">
+                {item.value}
+                <button
+                  className="edit-button"
+                  onClick={() => editTodo(item.id)}
+                >
                   <FiEdit2 />
                 </button>
                 <button

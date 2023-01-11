@@ -17,7 +17,13 @@ function App() {
   const [id, setId] = useState("");
   const [value, setValue] = useState("");
 
-  function onSubmit(e) {
+  const inputChange = (e) => {
+    setTodo(e.target.value);
+    setSearch(e.target.value);
+    setValue(e.target.value);
+  };
+
+  const onSubmit = (e) => {
     e.preventDefault(); //prevents page from refreshing
 
     if (!newTodo) return;
@@ -25,31 +31,29 @@ function App() {
       let tempItems = items.map((item) => {
         return item.id === id ? { ...item, id, value } : item; //update object/array
       });
-      console.log(items);
       setItems(tempItems);
-      console.log(items);
       setToggleE(false);
     } else {
-      const item = {
+      const singleItem = {
         id: Math.floor(Math.random() * 10000), //not foolproof to making a unique id
         value: newTodo,
       };
-      setItems((oldList) => [...oldList, item]);
+      setItems((oldList) => [...oldList, singleItem]);
     }
 
     setTodo("");
-  }
+    setId("");
+  };
 
-  function deleteTodo(selected) {
-    const newArray = items.filter((item) => item.selected !== selected);
+  const deleteTodo = (selected) => {
+    const newArray = items.filter((item) => item.id !== selected);
     setItems(newArray);
-  }
+  };
 
-  function editTodo(selected) {
+  const editTodo = (selected) => {
     setToggleE(!toggleE);
     setTodo(selected.value); //set input
 
-    const editedArray = items.filter((item) => item.id !== selected.id);
     const selectedArray = items.find((item) => item.id === selected.id);
     console.log(selectedArray);
     let { id, value } = selectedArray;
@@ -58,26 +62,15 @@ function App() {
     setToggleE(true);
     console.log(id);
     console.log(value);
-    // setItems(editedArray);
-    // setItems((oldList) => [...oldList, selectedItem]);
+  };
 
-    // console.log(editedArray);
-    // console.log(items);
-  }
-
-  function toggled() {
+  const toggled = () => {
     if (toggleH === false) {
       setToggleH(true);
     } else setToggleH(false);
-  }
+  };
 
-  function inputChange(e) {
-    setTodo(e.target.value);
-    setSearch(e.target.value);
-    setValue(e.target.value);
-  }
-
-  function searchTodo(e) {
+  const searchTodo = (e) => {
     setToggleS(!toggleS);
     TodoEG.filter((eg) => eg.value.toLowerCase().includes(search));
     //   const arraySearch = items.filter((item) => {
@@ -87,7 +80,7 @@ function App() {
     //   if (toggleS === false) {
     //     setToggleS(true);
     //   } else setToggleS(false);
-  }
+  };
 
   return (
     <div className="todo-app">

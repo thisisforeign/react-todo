@@ -7,7 +7,7 @@ import { TiTick } from "react-icons/ti";
 import { TodoEG } from "./Example";
 
 function App() {
-  const [newTodo, setTodo] = useState("");
+  const [newTodo, setNewTodo] = useState("");
   const [items, setItems] = useState([]);
   const [toggleH, setToggleH] = useState(false);
   const [toggleS, setToggleS] = useState(false);
@@ -18,7 +18,7 @@ function App() {
   const [value, setValue] = useState("");
 
   const inputChange = (e) => {
-    setTodo(e.target.value);
+    setNewTodo(e.target.value);
     setSearch(e.target.value);
     setValue(e.target.value);
   };
@@ -41,7 +41,7 @@ function App() {
       setItems((oldList) => [...oldList, singleItem]);
     }
 
-    setTodo("");
+    setNewTodo("");
     setId("");
   };
 
@@ -52,16 +52,13 @@ function App() {
 
   const editTodo = (selected) => {
     setToggleE(!toggleE);
-    setTodo(selected.value); //set input
+    setNewTodo(selected.value); //set input
 
     const selectedArray = items.find((item) => item.id === selected.id);
-    console.log(selectedArray);
     let { id, value } = selectedArray;
     setId(id);
     setValue(value);
     setToggleE(true);
-    console.log(id);
-    console.log(value);
   };
 
   const toggled = () => {
@@ -82,6 +79,13 @@ function App() {
     //   } else setToggleS(false);
   };
 
+  const cancel = () => {
+    setId("");
+    setValue("");
+    setToggleE(false);
+    setNewTodo("");
+  };
+
   return (
     <div className="todo-app">
       <h1>Todo app</h1>
@@ -99,26 +103,35 @@ function App() {
           onChange={(e) => inputChange(e)} //enables typing
         />
         {!toggleS ? (
-          <button
-            className={!toggleE ? "add-button" : "addEdit-button"}
-            type="submit"
-          >
+          <>
+            <button
+              className={!toggleE ? "add-button" : "addEdit-button"}
+              type="submit"
+            >
+              {!toggleE ? (
+                <>
+                  Add <HiOutlinePlusCircle />
+                </>
+              ) : (
+                <>
+                  Edit <TiTick />
+                </>
+              )}
+            </button>
             {!toggleE ? (
-              <>
-                Add <HiOutlinePlusCircle />
-              </>
+              ""
             ) : (
-              <>
-                Edit <TiTick />
-              </>
+              <button className="cancel-button" type="button" onClick={cancel}>
+                Cancel
+              </button>
             )}
-          </button>
+          </>
         ) : (
           <></>
         )}
 
         <button className="toggle-button" type="button" onClick={toggled}>
-          History
+          Autocomplete
         </button>
         <button className="search-button" type="button" onClick={searchTodo}>
           <HiSearch />

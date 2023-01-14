@@ -7,13 +7,12 @@ import { TiTick } from "react-icons/ti";
 import { TodoEG } from "./Example";
 
 function App() {
-  const [newTodo, setNewTodo] = useState("");
-  const [items, setItems] = useState([]);
-  const [toggleH, setToggleH] = useState(false);
-  const [toggleS, setToggleS] = useState(false);
-  const [toggleE, setToggleE] = useState(false);
-  const [search, setSearch] = useState("no results");
-  const [edit, setEdit] = useState(false);
+  const [newTodo, setNewTodo] = useState(""); //stores inputm, can clear input
+  const [items, setItems] = useState([]); //stores every input
+  const [toggleA, setToggleA] = useState(false); //toggle autocomplete
+  const [toggleS, setToggleS] = useState(false); //toggle search
+  const [toggleE, setToggleE] = useState(false); //toggle edit
+  const [search, setSearch] = useState("no results"); //stores search input
   const [id, setId] = useState("");
   const [value, setValue] = useState("");
 
@@ -51,32 +50,34 @@ function App() {
   };
 
   const editTodo = (selected) => {
-    setToggleE(!toggleE);
-    setNewTodo(selected.value); //set input
+    if (toggleE === false) {
+      setNewTodo(selected.value); //set input
 
-    const selectedArray = items.find((item) => item.id === selected.id);
-    let { id, value } = selectedArray;
-    setId(id);
-    setValue(value);
-    setToggleE(true);
+      const selectedArray = items.find((item) => item.id === selected.id);
+      let { id, value } = selectedArray;
+      setId(id);
+      setValue(value);
+      setToggleE(true);
+    } else {
+      setNewTodo(selected.value); //set input
+
+      const selectedArray = items.find((item) => item.id === selected.id);
+      let { id, value } = selectedArray;
+      setId(id);
+      setValue(value);
+    }
   };
 
-  const toggled = () => {
-    if (toggleH === false) {
-      setToggleH(true);
-    } else setToggleH(false);
+  const toggledAuto = () => {
+    if (toggleA === false) {
+      setToggleA(true);
+    } else setToggleA(false);
   };
 
   const searchTodo = (e) => {
     setToggleS(!toggleS);
-    TodoEG.filter((eg) => eg.value.toLowerCase().includes(search));
-    //   const arraySearch = items.filter((item) => {
-    //     return e.target.value;
-    //   });
-    //   console.log(arraySearch);
-    //   if (toggleS === false) {
-    //     setToggleS(true);
-    //   } else setToggleS(false);
+    setNewTodo("");
+    setToggleE(false);
   };
 
   const cancel = () => {
@@ -92,7 +93,7 @@ function App() {
       <form
         className="todo-form"
         onSubmit={onSubmit}
-        autoComplete={toggleH === false ? "off" : "on"}
+        autoComplete={toggleA === false ? "off" : "on"}
       >
         <input
           autoFocus
@@ -105,10 +106,10 @@ function App() {
         {!toggleS ? (
           <>
             <button
-              className={!toggleE ? "add-button" : "addEdit-button"}
+              className={toggleE === false ? "add-button" : "addEdit-button"}
               type="submit"
             >
-              {!toggleE ? (
+              {toggleE === false ? (
                 <>
                   Add <HiOutlinePlusCircle />
                 </>
@@ -118,7 +119,7 @@ function App() {
                 </>
               )}
             </button>
-            {!toggleE ? (
+            {toggleE === false ? (
               ""
             ) : (
               <button className="cancel-button" type="button" onClick={cancel}>
@@ -130,7 +131,7 @@ function App() {
           <></>
         )}
 
-        <button className="toggle-button" type="button" onClick={toggled}>
+        <button className="toggle-button" type="button" onClick={toggledAuto}>
           Autocomplete
         </button>
         <button className="search-button" type="button" onClick={searchTodo}>
@@ -138,35 +139,32 @@ function App() {
         </button>
 
         <ul>
-          {items.map((item) => {
-            return (
-              <li key={item.id}>
-                {item.value}
-                <button
-                  className="edit-button"
-                  type="button"
-                  onClick={() => editTodo(item)}
-                >
-                  <FiEdit2 />
-                </button>
-                <button
-                  className="delete-button"
-                  type="button"
-                  onClick={() => deleteTodo(item.id)}
-                >
-                  <VscTrash />
-                </button>
-              </li>
-            );
-          })}
+          {!toggleS
+            ? items.map((item) => {
+                return (
+                  <li key={item.id}>
+                    {item.value}
+                    <button
+                      className="edit-button"
+                      type="button"
+                      onClick={() => editTodo(item)}
+                    >
+                      <FiEdit2 />
+                    </button>
+                    <button
+                      className="delete-button"
+                      type="button"
+                      onClick={() => deleteTodo(item.id)}
+                    >
+                      <VscTrash />
+                    </button>
+                  </li>
+                );
+              })
+            : items
+                .filter((item) => item.value.toLowerCase().includes(search))
+                .map((item) => <li key={item.id}>{item.value}</li>)}
         </ul>
-        {/* <ul>
-          {TodoEG.filter((eg) => eg.value.toLowerCase().includes(search)).map(
-            (eg) => (
-              <li key={eg.id}>{eg.value}</li>
-            )
-          )}
-        </ul> */}
       </form>
     </div>
   );

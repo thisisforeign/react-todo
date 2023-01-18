@@ -4,7 +4,7 @@ import { VscTrash } from "react-icons/vsc";
 import { FiEdit2 } from "react-icons/fi";
 import { HiSearch, HiOutlinePlusCircle } from "react-icons/hi";
 import { TiTick } from "react-icons/ti";
-import { TodoEG } from "./Example";
+//import { TodoEG } from "./Example";
 
 function App() {
   const [newTodo, setNewTodo] = useState(""); //stores inputm, can clear input
@@ -88,84 +88,90 @@ function App() {
   };
 
   return (
-    <div className="todo-app">
-      <h1>Todo app</h1>
-      <form
-        className="todo-form"
-        onSubmit={onSubmit}
-        autoComplete={toggleA === false ? "off" : "on"}
-      >
-        <input
-          autoFocus
-          type="text"
-          name="text"
-          value={newTodo}
-          className="todo-input"
-          onChange={(e) => inputChange(e)} //enables typing
-        />
-        {!toggleS ? (
-          <>
-            <button
-              className={toggleE === false ? "add-button" : "addEdit-button"}
-              type="submit"
-            >
-              {toggleE === false ? (
-                <>
-                  Add <HiOutlinePlusCircle />
-                </>
-              ) : (
-                <>
-                  Edit <TiTick />
-                </>
-              )}
-            </button>
-            {toggleE === false ? (
-              ""
-            ) : (
-              <button className="cancel-button" type="button" onClick={cancel}>
-                Cancel
+    <div className="mainContainer">
+      <div className="todo-app container">
+        <h1>Todo app</h1>
+        <form
+          className="todo-form"
+          onSubmit={onSubmit}
+          autoComplete={toggleA === false ? "off" : "on"}
+        >
+          <input
+            autoFocus
+            type="text"
+            name="text"
+            value={newTodo}
+            className="todo-input"
+            onChange={(e) => inputChange(e)} //enables typing
+          />
+          {!toggleS ? (
+            <>
+              <button
+                className={toggleE === false ? "add-button" : "addEdit-button"}
+                type="submit"
+              >
+                {toggleE === false ? (
+                  <>
+                    Add <HiOutlinePlusCircle />
+                  </>
+                ) : (
+                  <>
+                    Edit <TiTick />
+                  </>
+                )}
               </button>
-            )}
-          </>
-        ) : (
-          <></>
-        )}
+              {toggleE === false ? (
+                ""
+              ) : (
+                <button
+                  className="cancel-button"
+                  type="button"
+                  onClick={cancel}
+                >
+                  Cancel
+                </button>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
 
-        <button className="toggle-button" type="button" onClick={toggledAuto}>
-          Autocomplete
-        </button>
-        <button className="search-button" type="button" onClick={searchTodo}>
-          <HiSearch />
-        </button>
+          <button className="toggle-button" type="button" onClick={toggledAuto}>
+            Autocomplete
+          </button>
+          <button className="search-button" type="button" onClick={searchTodo}>
+            <HiSearch />
+          </button>
 
-        <ul>
-          {!toggleS
-            ? items.map((item) => {
-                return (
-                  <li key={item.id}>
-                    {item.value}
-                    <button
-                      className="edit-button"
-                      type="button"
-                      onClick={() => editTodo(item)}
-                    >
-                      <FiEdit2 />
-                    </button>
-                    <button
-                      className="delete-button"
-                      type="button"
-                      onClick={() => deleteTodo(item.id)}
-                    >
-                      <VscTrash />
-                    </button>
-                  </li>
-                );
-              })
-            : items
-                .filter((item) => item.value.toLowerCase().includes(search))
-                .map((item) => <li key={item.id}>{item.value}</li>)}
-        </ul>
-      </form>
+          <ul>
+            {!toggleS
+              ? items.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      {item.value}
+                      <button
+                        className="edit-button"
+                        type="button"
+                        onClick={() => editTodo(item)}
+                      >
+                        <FiEdit2 />
+                      </button>
+                      <button
+                        className="delete-button"
+                        type="button"
+                        onClick={() => deleteTodo(item.id)}
+                      >
+                        <VscTrash />
+                      </button>
+                    </li>
+                  );
+                })
+              : items
+                  .filter((item) => item.value.toLowerCase().includes(search))
+                  .map((item) => <li key={item.id}>{item.value}</li>)}
+          </ul>
+        </form>
+      </div>
     </div>
   );
 }

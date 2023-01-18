@@ -1,6 +1,49 @@
 body {
-  background-color: #32373a;
+  background: rgb(66, 159, 211);
+  background: linear-gradient(180deg, #0874d1 0%, #e9b68d 85%);
   color: bisque;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: cursive, "Times New Roman", Times, serif;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 600px;
+  background: #b04823;
+  border-radius: 10px;
+  padding: 0px 75px 20px;
+  margin: 85px auto;
+  width: 497px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  font-family: Monospace, "Times New Roman", Times, serif;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  padding: 6px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+input:focus {
+  background: lightblue;
+}
+
+li {
+  font-size: 25px;
+  margin-bottom: 10px;
+  list-style-type: none;
+  text-align: center;
+  font-family: Monospace, "Times New Roman", Times, serif;
 }
 
 .delete-button {
@@ -16,18 +59,89 @@ body {
   padding: 12px 11px 10px 12px;
 }
 
-li {
-  font-size: 25px;
-}
-
 button {
   margin-left: 5px;
+  font-family: Monospace, "Times New Roman", Times, serif;
 }
 
 .add-button {
   background-color: #0d7eff;
+  border: 5px solid #0f62c2;
 }
 
 .addEdit-button {
   background-color: #289648;
+  border: 5px solid #207739;
+}
+
+.cancel-button {
+  background-color: #ff0000;
+  border: 5px solid #d82525;
+}
+
+.toggle-button,
+.search-button {
+  background-color: #ffffff;
+  border: 5px solid #cfcfcf;
+}
+
+.add-button,
+.addEdit-button,
+.cancel-button,
+.toggle-button,
+.search-button {
+  font-weight: bold;
+  margin-left: 8px;
+  border-radius: 6px;
+  padding: 4px 11px 4px 11px;
+  border-left: 0px;
+  border-bottom: 0px;
+}
+
+.edit-button,
+.delete-button {
+  border: 5px solid #eba44d;
+  border-left: 0px;
+  border-bottom: 0px;
+  background: #e8c396;
+}
+
+.edit-button:active,
+.delete-button:active {
+  border: 3px solid #eba44d;
+  border-left: 0px;
+  border-bottom: 0px;
+}
+
+.add-button:active {
+  border: 3px solid #0f62c2;
+  margin-top: 2px;
+  margin-right: 2px;
+  border-left: 0px;
+  border-bottom: 0px;
+}
+
+.addEdit-button:active {
+  border: 3px solid #207739;
+  margin-top: 2px;
+  margin-right: 2px;
+  border-left: 0px;
+  border-bottom: 0px;
+}
+
+.cancel-button:active {
+  border: 3px solid #d82525;
+  margin-top: 2px;
+  margin-right: 2px;
+  border-left: 0px;
+  border-bottom: 0px;
+}
+
+.toggle-button:active,
+.search-button:active {
+  border: 3px solid #cfcfcf;
+  margin-top: 2px;
+  margin-right: 2px;
+  border-left: 0px;
+  border-bottom: 0px;
 }

@@ -1,4 +1,7 @@
 # react-todo
+[Calculator test vid.webm](https://user-images.githubusercontent.com/109660863/217503557-37c6cced-d72d-4700-aa1d-4b9cab006546.webm)
+
+
 First react project
 
 Learnt: 

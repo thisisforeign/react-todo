@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { VscTrash } from "react-icons/vsc";
 import { FiEdit2 } from "react-icons/fi";
@@ -15,6 +15,7 @@ function App() {
   const [search, setSearch] = useState("no results"); //stores search input
   const [id, setId] = useState("");
   const [value, setValue] = useState("");
+  const [db, setDb] = useState([]);
 
   const inputChange = (e) => {
     setNewTodo(e.target.value);
@@ -37,7 +38,11 @@ function App() {
         id: Math.floor(Math.random() * 10000), //not foolproof to making a unique id
         value: newTodo,
       };
-      setItems((oldList) => [...oldList, singleItem]);
+      setItems((oldList) => {
+        const updatedList = [...oldList, singleItem];
+        saveData(updatedList);
+        return updatedList;
+      });
     }
 
     setNewTodo("");
@@ -47,6 +52,8 @@ function App() {
   const deleteTodo = (selected) => {
     const newArray = items.filter((item) => item.id !== selected);
     setItems(newArray);
+    console.log(selected)
+    window.localStorage.removeItem(newArray);
   };
 
   const editTodo = (selected) => {
@@ -86,6 +93,34 @@ function App() {
     setToggleE(false);
     setNewTodo("");
   };
+
+  const saveData = (data) => {
+    console.log(data)
+    window.localStorage.setItem("todos", JSON.stringify(data));
+    const database = JSON.parse(window.localStorage.getItem("todos"));
+    setDb(database);
+    if(database !== null){
+      setItems(database);
+    }
+  };
+  
+  const justLoaded = () => {
+    const database = JSON.parse(window.localStorage.getItem("todos"));
+    setDb(database);
+    if(database !== null){
+      setItems(database);
+    }
+    console.log(database);
+  };
+
+  // useEffect(() => {
+  //   console.log(db)
+  //   console.log(items)
+  // }, [items])
+
+  useEffect(() => {
+    justLoaded();
+  }, []);
 
   return (
     <div className="mainContainer">
@@ -144,8 +179,9 @@ function App() {
           </button>
 
           <ul>
-            {!toggleS
-              ? items.map((item) => {
+            {!toggleS ? (
+              <> 
+              {db !== null ? items.map((item) => {
                   return (
                     <li key={item.id}>
                       {item.value}
@@ -166,9 +202,13 @@ function App() {
                     </li>
                   );
                 })
-              : items
-                  .filter((item) => item.value.toLowerCase().includes(search))
-                  .map((item) => <li key={item.id}>{item.value}</li>)}
+                : ""}
+              </>
+            ) : (
+              items
+                .filter((item) => item.value.toLowerCase().includes(search))
+                .map((item) => <li key={item.id}>{item.value}</li>)
+            )}
           </ul>
         </form>
       </div>

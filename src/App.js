@@ -15,7 +15,8 @@ function App() {
   const [search, setSearch] = useState("no results"); //stores search input
   const [id, setId] = useState("");
   const [value, setValue] = useState("");
-  const [db, setDb] = useState([]);
+
+  const keys = Object.keys(localStorage);
 
   const inputChange = (e) => {
     setNewTodo(e.target.value);
@@ -40,6 +41,7 @@ function App() {
       };
       setItems((oldList) => {
         const updatedList = [...oldList, singleItem];
+        console.log(updatedList)
         saveData(updatedList);
         return updatedList;
       });
@@ -52,8 +54,18 @@ function App() {
   const deleteTodo = (selected) => {
     const newArray = items.filter((item) => item.id !== selected);
     setItems(newArray);
-    console.log(selected)
-    window.localStorage.removeItem(newArray);
+    console.log(selected);
+
+    const storedItems = keys.map((key) => {
+      const storedItem = JSON.parse(localStorage.getItem(key));
+      console.log(storedItem)
+      return {
+        ...storedItem,
+        key: key,
+      };
+    });
+    const selectedDb = storedItems.filter((item) => item.id === selected);
+    window.localStorage.removeItem(selectedDb[0].key);
   };
 
   const editTodo = (selected) => {
@@ -95,31 +107,26 @@ function App() {
   };
 
   const saveData = (data) => {
-    console.log(data)
-    window.localStorage.setItem("todos", JSON.stringify(data));
-    const database = JSON.parse(window.localStorage.getItem("todos"));
-    setDb(database);
-    if(database !== null){
-      setItems(database);
-    }
+    const newKey = keys.length === 0 ? 1 : Math.max(...keys) + 1;
+    data.forEach((item) => {
+      window.localStorage.setItem(newKey, JSON.stringify(item));
+    });
   };
-  
-  const justLoaded = () => {
-    const database = JSON.parse(window.localStorage.getItem("todos"));
-    setDb(database);
-    if(database !== null){
-      setItems(database);
-    }
-    console.log(database);
-  };
-
-  // useEffect(() => {
-  //   console.log(db)
-  //   console.log(items)
-  // }, [items])
 
   useEffect(() => {
-    justLoaded();
+    const ascKeys = keys.sort(function(a, b){return a-b});
+    const storedItems = ascKeys.map((key) => {
+      const storedItem = JSON.parse(localStorage.getItem(key));
+      console.log(storedItem)
+      return {
+        ...storedItem,
+        key: key,
+      };
+    });
+    console.log(storedItems)
+    if (keys.length !== 0) {
+      setItems(storedItems);
+    }
   }, []);
 
   return (
@@ -180,30 +187,27 @@ function App() {
 
           <ul>
             {!toggleS ? (
-              <> 
-              {db !== null ? items.map((item) => {
-                  return (
-                    <li key={item.id}>
-                      {item.value}
-                      <button
-                        className="edit-button"
-                        type="button"
-                        onClick={() => editTodo(item)}
-                      >
-                        <FiEdit2 />
-                      </button>
-                      <button
-                        className="delete-button"
-                        type="button"
-                        onClick={() => deleteTodo(item.id)}
-                      >
-                        <VscTrash />
-                      </button>
-                    </li>
-                  );
-                })
-                : ""}
-              </>
+              items.map((item) => {
+                return (
+                  <li key={item.id}>
+                    {item.value}
+                    <button
+                      className="edit-button"
+                      type="button"
+                      onClick={() => editTodo(item)}
+                    >
+                      <FiEdit2 />
+                    </button>
+                    <button
+                      className="delete-button"
+                      type="button"
+                      onClick={() => deleteTodo(item.id)}
+                    >
+                      <VscTrash />
+                    </button>
+                  </li>
+                );
+              })
             ) : (
               items
                 .filter((item) => item.value.toLowerCase().includes(search))

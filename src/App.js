@@ -34,6 +34,7 @@ function App() {
       });
       setItems(tempItems);
       setToggleE(false);
+      updateData();
     } else {
       const singleItem = {
         id: Math.floor(Math.random() * 10000), //not foolproof to making a unique id
@@ -41,7 +42,6 @@ function App() {
       };
       setItems((oldList) => {
         const updatedList = [...oldList, singleItem];
-        console.log(updatedList)
         saveData(updatedList);
         return updatedList;
       });
@@ -58,7 +58,6 @@ function App() {
 
     const storedItems = keys.map((key) => {
       const storedItem = JSON.parse(localStorage.getItem(key));
-      console.log(storedItem)
       return {
         ...storedItem,
         key: key,
@@ -113,11 +112,26 @@ function App() {
     });
   };
 
+  const updateData = () => {
+    const storedItems = keys.map((key) => {
+      const storedItem = JSON.parse(localStorage.getItem(key));
+      return {
+        ...storedItem,
+        key: key,
+      };
+    });
+    const selectedDb = storedItems.filter((item) => item.id === id);
+    const updatedItem = {
+      id: id,
+      value: value,
+    };
+    window.localStorage.setItem(selectedDb[0].key, JSON.stringify(updatedItem));
+  }
+
   useEffect(() => {
     const ascKeys = keys.sort(function(a, b){return a-b});
     const storedItems = ascKeys.map((key) => {
       const storedItem = JSON.parse(localStorage.getItem(key));
-      console.log(storedItem)
       return {
         ...storedItem,
         key: key,

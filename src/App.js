@@ -54,7 +54,6 @@ function App() {
   const deleteTodo = (selected) => {
     const newArray = items.filter((item) => item.id !== selected);
     setItems(newArray);
-    console.log(selected);
 
     const storedItems = keys.map((key) => {
       const storedItem = JSON.parse(localStorage.getItem(key));
@@ -103,6 +102,7 @@ function App() {
     setValue("");
     setToggleE(false);
     setNewTodo("");
+    setToggleS(false);
   };
 
   const saveData = (data) => {
@@ -126,10 +126,12 @@ function App() {
       value: value,
     };
     window.localStorage.setItem(selectedDb[0].key, JSON.stringify(updatedItem));
-  }
+  };
 
   useEffect(() => {
-    const ascKeys = keys.sort(function(a, b){return a-b});
+    const ascKeys = keys.sort(function (a, b) {
+      return a - b;
+    });
     const storedItems = ascKeys.map((key) => {
       const storedItem = JSON.parse(localStorage.getItem(key));
       return {
@@ -137,7 +139,7 @@ function App() {
         key: key,
       };
     });
-    console.log(storedItems)
+
     if (keys.length !== 0) {
       setItems(storedItems);
     }
@@ -189,7 +191,9 @@ function App() {
               )}
             </>
           ) : (
-            <></>
+            <button className="cancel-button" type="button" onClick={cancel}>
+              Cancel
+            </button>
           )}
 
           <button className="toggle-button" type="button" onClick={toggledAuto}>
@@ -200,33 +204,31 @@ function App() {
           </button>
 
           <ul>
-            {!toggleS ? (
-              items.map((item) => {
-                return (
-                  <li key={item.id}>
-                    {item.value}
-                    <button
-                      className="edit-button"
-                      type="button"
-                      onClick={() => editTodo(item)}
-                    >
-                      <FiEdit2 />
-                    </button>
-                    <button
-                      className="delete-button"
-                      type="button"
-                      onClick={() => deleteTodo(item.id)}
-                    >
-                      <VscTrash />
-                    </button>
-                  </li>
-                );
-              })
-            ) : (
-              items
-                .filter((item) => item.value.toLowerCase().includes(search))
-                .map((item) => <li key={item.id}>{item.value}</li>)
-            )}
+            {!toggleS
+              ? items.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      {item.value}
+                      <button
+                        className="edit-button"
+                        type="button"
+                        onClick={() => editTodo(item)}
+                      >
+                        <FiEdit2 />
+                      </button>
+                      <button
+                        className="delete-button"
+                        type="button"
+                        onClick={() => deleteTodo(item.id)}
+                      >
+                        <VscTrash />
+                      </button>
+                    </li>
+                  );
+                })
+              : items
+                  .filter((item) => item.value.toLowerCase().includes(search))
+                  .map((item) => <li key={item.id}>{item.value}</li>)}
           </ul>
         </form>
       </div>
